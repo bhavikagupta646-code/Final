@@ -1,0 +1,1308 @@
+{
+  "network": "localhost",
+  "chainId": 31337,
+  "deployedAt": "2026-11-23T19:18:59.739Z",
+  "contracts": {
+    "HealthShieldRegistry": {
+      "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      "abi": [
+        {
+          "type": "constructor",
+          "stateMutability": "undefined",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_admin"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "AccessControlBadConfirmation",
+          "inputs": []
+        },
+        {
+          "type": "error",
+          "name": "AccessControlUnauthorizedAccount",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "account"
+            },
+            {
+              "type": "bytes32",
+              "name": "neededRole"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "EntityNotFound",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "HospitalAlreadyRegistered",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "InsurerAlreadyRegistered",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet"
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "HospitalRegistered",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet",
+              "indexed": true
+            },
+            {
+              "type": "string",
+              "name": "hospitalId",
+              "indexed": false
+            },
+            {
+              "type": "string",
+              "name": "name",
+              "indexed": false
+            },
+            {
+              "type": "uint256",
+              "name": "ax",
+              "indexed": false
+            },
+            {
+              "type": "uint256",
+              "name": "ay",
+              "indexed": false
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "HospitalStatusUpdated",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet",
+              "indexed": true
+            },
+            {
+              "type": "bool",
+              "name": "isActive",
+              "indexed": false
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "InsurerRegistered",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet",
+              "indexed": true
+            },
+            {
+              "type": "string",
+              "name": "insurerId",
+              "indexed": false
+            },
+            {
+              "type": "string",
+              "name": "name",
+              "indexed": false
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "InsurerStatusUpdated",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "wallet",
+              "indexed": true
+            },
+            {
+              "type": "bool",
+              "name": "isActive",
+              "indexed": false
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "RoleAdminChanged",
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role",
+              "indexed": true
+            },
+            {
+              "type": "bytes32",
+              "name": "previousAdminRole",
+              "indexed": true
+            },
+            {
+              "type": "bytes32",
+              "name": "newAdminRole",
+              "indexed": true
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "RoleGranted",
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "account",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "sender",
+              "indexed": true
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "RoleRevoked",
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "account",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "sender",
+              "indexed": true
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "ADMIN_ROLE",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "bytes32",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "DEFAULT_ADMIN_ROLE",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "bytes32",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "REGISTRAR_ROLE",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "bytes32",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "getRoleAdmin",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bytes32",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role"
+            },
+            {
+              "type": "address",
+              "name": "account"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "hasRole",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role"
+            },
+            {
+              "type": "address",
+              "name": "account"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "hospitalIdToAddress",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "string",
+              "name": ""
+            }
+          ],
+          "outputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "hospitals",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ],
+          "outputs": [
+            {
+              "type": "string",
+              "name": "hospitalId"
+            },
+            {
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "type": "uint256",
+              "name": "babyJubjubAx"
+            },
+            {
+              "type": "uint256",
+              "name": "babyJubjubAy"
+            },
+            {
+              "type": "bool",
+              "name": "isRegistered"
+            },
+            {
+              "type": "bool",
+              "name": "isActive"
+            },
+            {
+              "type": "uint256",
+              "name": "registeredAt"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "insurerIdToAddress",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "string",
+              "name": ""
+            }
+          ],
+          "outputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "insurers",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ],
+          "outputs": [
+            {
+              "type": "string",
+              "name": "insurerId"
+            },
+            {
+              "type": "string",
+              "name": "name"
+            },
+            {
+              "type": "bool",
+              "name": "isRegistered"
+            },
+            {
+              "type": "bool",
+              "name": "isActive"
+            },
+            {
+              "type": "uint256",
+              "name": "registeredAt"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "isHospitalCertified",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_wallet"
+            },
+            {
+              "type": "uint256",
+              "name": "_ax"
+            },
+            {
+              "type": "uint256",
+              "name": "_ay"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "isInsurerAuthorized",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_wallet"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "registerHospital",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_wallet"
+            },
+            {
+              "type": "string",
+              "name": "_hospitalId"
+            },
+            {
+              "type": "string",
+              "name": "_name"
+            },
+            {
+              "type": "uint256",
+              "name": "_ax"
+            },
+            {
+              "type": "uint256",
+              "name": "_ay"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "registerInsurer",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_wallet"
+            },
+            {
+              "type": "string",
+              "name": "_insurerId"
+            },
+            {
+              "type": "string",
+              "name": "_name"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role"
+            },
+            {
+              "type": "address",
+              "name": "callerConfirmation"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "bytes32",
+              "name": "role"
+            },
+            {
+              "type": "address",
+              "name": "account"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "setHospitalStatus",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_wallet"
+            },
+            {
+              "type": "bool",
+              "name": "_isActive"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "setInsurerStatus",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_wallet"
+            },
+            {
+              "type": "bool",
+              "name": "_isActive"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "supportsInterface",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "bytes4",
+              "name": "interfaceId"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        }
+      ]
+    },
+    "Verifier": {
+      "address": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    },
+    "InsuranceClaimManager": {
+      "address": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "abi": [
+        {
+          "type": "constructor",
+          "stateMutability": "undefined",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_registry"
+            },
+            {
+              "type": "address",
+              "name": "_verifier"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "ClaimAlreadySettled",
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "nullifier"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "ClaimNotFound",
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "nullifier"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "HospitalNotCertified",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "hospital"
+            },
+            {
+              "type": "uint256",
+              "name": "ax"
+            },
+            {
+              "type": "uint256",
+              "name": "ay"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "InsurerNotAuthorized",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "insurer"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "InvalidCaller",
+          "inputs": []
+        },
+        {
+          "type": "error",
+          "name": "InvalidZKProof",
+          "inputs": []
+        },
+        {
+          "type": "error",
+          "name": "NullifierAlreadySpent",
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "nullifier"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "OwnableInvalidOwner",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "owner"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "OwnableUnauthorizedAccount",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "account"
+            }
+          ]
+        },
+        {
+          "type": "error",
+          "name": "ReentrancyGuardReentrantCall",
+          "inputs": []
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "ClaimSettled",
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "nullifier",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "insurer",
+              "indexed": true
+            },
+            {
+              "type": "uint256",
+              "name": "payoutAmount",
+              "indexed": false
+            },
+            {
+              "type": "uint256",
+              "name": "timestamp",
+              "indexed": false
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "ClaimSubmittedAndApproved",
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "nullifier",
+              "indexed": true
+            },
+            {
+              "type": "uint256",
+              "name": "policyId",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "patient",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "hospital",
+              "indexed": false
+            },
+            {
+              "type": "address",
+              "name": "insurer",
+              "indexed": false
+            },
+            {
+              "type": "uint256",
+              "name": "claimedPayout",
+              "indexed": false
+            },
+            {
+              "type": "uint256",
+              "name": "timestamp",
+              "indexed": false
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "OwnershipTransferred",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "previousOwner",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "newOwner",
+              "indexed": true
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "RegistryUpdated",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "oldRegistry",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "newRegistry",
+              "indexed": true
+            }
+          ]
+        },
+        {
+          "type": "event",
+          "anonymous": false,
+          "name": "VerifierUpdated",
+          "inputs": [
+            {
+              "type": "address",
+              "name": "oldVerifier",
+              "indexed": true
+            },
+            {
+              "type": "address",
+              "name": "newVerifier",
+              "indexed": true
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_AUTH_ROOT",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_CLAIMED_PAYOUT",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_COPAY_BPS",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_DEDUCTIBLE",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_HOSP_ADDR",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_HOSP_AX",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_HOSP_AY",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_INSURER_ADDR",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_NULLIFIER",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_PATIENT_ADDR",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_POLICY_ID",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "IDX_POLICY_LIMIT",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "claims",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ],
+          "outputs": [
+            {
+              "type": "uint256",
+              "name": "nullifier"
+            },
+            {
+              "type": "uint256",
+              "name": "policyId"
+            },
+            {
+              "type": "address",
+              "name": "patient"
+            },
+            {
+              "type": "address",
+              "name": "hospital"
+            },
+            {
+              "type": "address",
+              "name": "insurer"
+            },
+            {
+              "type": "uint256",
+              "name": "claimedPayout"
+            },
+            {
+              "type": "uint8",
+              "name": "status"
+            },
+            {
+              "type": "uint256",
+              "name": "submittedAt"
+            },
+            {
+              "type": "uint256",
+              "name": "settledAt"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "getClaim",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "_nullifier"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "tuple",
+              "name": "",
+              "components": [
+                {
+                  "type": "uint256",
+                  "name": "nullifier"
+                },
+                {
+                  "type": "uint256",
+                  "name": "policyId"
+                },
+                {
+                  "type": "address",
+                  "name": "patient"
+                },
+                {
+                  "type": "address",
+                  "name": "hospital"
+                },
+                {
+                  "type": "address",
+                  "name": "insurer"
+                },
+                {
+                  "type": "uint256",
+                  "name": "claimedPayout"
+                },
+                {
+                  "type": "uint8",
+                  "name": "status"
+                },
+                {
+                  "type": "uint256",
+                  "name": "submittedAt"
+                },
+                {
+                  "type": "uint256",
+                  "name": "settledAt"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "isClaimSpent",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "_nullifier"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "nullifiers",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": ""
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "owner",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "registry",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "constant": false,
+          "payable": false,
+          "inputs": [],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "setRegistry",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_newRegistry"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "setVerifier",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "_newVerifier"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "settleClaim",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "uint256",
+              "name": "_nullifier"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "submitClaim",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "uint256[2]",
+              "name": "a"
+            },
+            {
+              "type": "uint256[2][2]",
+              "name": "b"
+            },
+            {
+              "type": "uint256[2]",
+              "name": "c"
+            },
+            {
+              "type": "uint256[12]",
+              "name": "pubSignals"
+            }
+          ],
+          "outputs": [
+            {
+              "type": "bool",
+              "name": ""
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "constant": false,
+          "payable": false,
+          "inputs": [
+            {
+              "type": "address",
+              "name": "newOwner"
+            }
+          ],
+          "outputs": []
+        },
+        {
+          "type": "function",
+          "name": "verifier",
+          "constant": true,
+          "stateMutability": "view",
+          "payable": false,
+          "inputs": [],
+          "outputs": [
+            {
+              "type": "address",
+              "name": ""
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

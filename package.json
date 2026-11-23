@@ -1,0 +1,34 @@
+{
+  "name": "healthshield",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HealthShield - Privacy-Preserving Healthcare Records & Zero-Knowledge Insurance Claims Platform",
+  "workspaces": [
+    "circuits",
+    "contracts",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:contracts": "npm --prefix contracts run node",
+    "dev:all": "concurrently -n \"NODE,CONTRACTS,BACKEND,FRONTEND\" -c \"yellow,blue,magenta,green\" \"npm --prefix contracts run node\" \"npm --prefix contracts run deploy:local\" \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "build:circuits": "npm --prefix circuits run build",
+    "build:contracts": "npm --prefix contracts run compile",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:contracts && npm run build:backend && npm run build:frontend",
+    "test:contracts": "npm --prefix contracts run test",
+    "test:backend": "npm --prefix backend run test",
+    "test": "npm run test:contracts && npm run test:backend",
+    "seed": "npm --prefix backend run seed",
+    "verify:e2e": "node scripts/verify-e2e.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@iden3/bigarray": "0.0.2"
+  }
+}

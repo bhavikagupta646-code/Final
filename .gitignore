@@ -1,0 +1,113 @@
+# =====================================
+# NODE.JS DEPENDENCIES
+# =====================================
+node_modules/
+**/node_modules/
+
+# =====================================
+# ENVIRONMENT VARIABLES & SECRETS
+# =====================================
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Private keys and certificates
+*.pem
+*.key
+*.p12
+*.pfx
+
+# =====================================
+# BUILD OUTPUTS
+# =====================================
+dist/
+build/
+.next/
+.nuxt/
+.output/
+coverage/
+
+# =====================================
+# LOG FILES
+# =====================================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =====================================
+# CACHE & TEMPORARY FILES
+# =====================================
+.cache/
+.parcel-cache/
+.tmp/
+temp/
+tmp/
+*.tmp
+*.swp
+
+# =====================================
+# TESTING OUTPUTS
+# =====================================
+.nyc_output/
+playwright-report/
+test-results/
+
+# =====================================
+# EDITORS & IDE
+# =====================================
+.idea/
+*.code-workspace
+
+# Optional: keep shared VS Code settings
+# .vscode/*
+
+# =====================================
+# OPERATING SYSTEM FILES
+# =====================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =====================================
+# JAVASCRIPT / TYPESCRIPT
+# =====================================
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+
+# =====================================
+# DATABASE LOCAL FILES
+# =====================================
+mongodb-data/
+mongo-data/
+*.sqlite
+*.sqlite3
+
+# =====================================
+# DEPLOYMENT & LOCAL CONFIG
+# =====================================
+.vercel/
+.netlify/
+.serverless/
+
+# =====================================
+# BACKUP FILES
+# =====================================
+*~
+*.old
+*.bak
+
+# =====================================
+# LOCAL ENVIRONMENT FILES
+# =====================================
+.npm/
+.turbo/
+
+# =====================================
+# SECURITY: LOCAL SECRET MATERIAL
+# =====================================
+.DS_Store
