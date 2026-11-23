@@ -90,3 +90,36 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+// Append this helper to the bottom of frontend/src/lib/api.ts
+export async function apiRequest(
+  endpoint: string,
+  options: RequestInit = {}
+): Promise<any> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "http://localhost:5000/api/v1";
+
+  const token =
+    typeof window !== "undefined"
+      ? localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken")
+      : null;
+
+  const response = await fetch(`${baseUrl}${endpoint}`, {
+    ...options,
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options.headers as Record<string, string>),
+    },
+  });
+
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : {};
+
+  if (!response.ok) {
+    throw new Error(data.detail || data.message || `Request failed (${response.status})`);
+  }
+
+  return data;
+}

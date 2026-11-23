@@ -1,156 +1,421 @@
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
-import { ShieldCheck, UserCheck, Building2, Landmark, Lock, Cpu, Database } from "lucide-react";
+import {
+  ShieldCheck,
+  Shield,
+  Lock,
+  ArrowRight,
+  User,
+  Building2,
+  Landmark,
+  Fingerprint,
+  Zap,
+  CheckCircle2,
+  Cpu,
+  UserPlus,
+} from "lucide-react";
+import "./landing.css";
+import { portalConfig } from "../config/portalConfig";
+import { ECGShieldLoader } from "../components/landing/ECGShieldLoader";
+import { AuthModal } from "../components/landing/AuthModal";
+import { ClaimVerificationModal } from "../components/landing/ClaimVerificationModal";
 
 export default function LandingPage() {
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState<"patient" | "hospital" | "insurer">("patient");
+  const [authMode, setAuthMode] = useState<"login" | "register">("login");
+  const [verificationModalOpen, setVerificationModalOpen] = useState(false);
+
+  const openAuth = (role: "patient" | "hospital" | "insurer", mode: "login" | "register" = "login") => {
+    setSelectedRole(role);
+    setAuthMode(mode);
+    setAuthModalOpen(true);
+  };
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="flex-1 flex flex-col justify-between">
-      {/* Navigation */}
-      <header className="border-b bg-white/70 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="bg-sky-600 text-white p-2 rounded-xl">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900">HealthShield</span>
-            <span className="text-xs bg-sky-100 text-sky-800 font-semibold px-2.5 py-0.5 rounded-full">Zero-Knowledge</span>
+    <div className="hs-landing">
+      {/* 1. ECG Shield Loader */}
+      <ECGShieldLoader />
+
+      {/* 2. Modals */}
+      <AuthModal
+        isOpen={authModalOpen}
+        initialRole={selectedRole}
+        initialMode={authMode}
+        onClose={() => setAuthModalOpen(false)}
+      />
+
+      <ClaimVerificationModal
+        isOpen={verificationModalOpen}
+        claimId="CLAIM-HS-2026-001"
+        onClose={() => setVerificationModalOpen(false)}
+      />
+
+      {/* 3. NAVBAR */}
+      <nav className="hs-navbar" id="home">
+        <Link href="/" className="hs-logo">
+          <ShieldCheck className="hs-logo-icon text-teal-600" />
+          <span>Health<span className="text-teal-600">Shield</span></span>
+        </Link>
+
+        <div className="hs-nav-links">
+          <button
+            type="button"
+            onClick={() => scrollToSection("home")}
+            className="hs-nav-link bg-transparent border-none cursor-pointer"
+          >
+            Home
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToSection("features")}
+            className="hs-nav-link bg-transparent border-none cursor-pointer"
+          >
+            Features
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToSection("portals")}
+            className="hs-nav-link bg-transparent border-none cursor-pointer"
+          >
+            Portals
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToSection("about")}
+            className="hs-nav-link bg-transparent border-none cursor-pointer"
+          >
+            About
+          </button>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => openAuth("patient", "login")}
+            className="text-xs font-bold text-slate-700 hover:text-teal-700 px-3 py-2 transition hidden sm:inline-block"
+          >
+            Sign In
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToSection("portals")}
+            className="hs-nav-btn"
+          >
+            <span>Get Started</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </nav>
+
+      {/* 4. HERO SECTION */}
+      <header className="hs-hero">
+        <div className="hs-hero-content">
+          <span className="hs-tag">
+            <Lock className="w-3.5 h-3.5 text-teal-600" />
+            <span>Privacy First Healthcare</span>
+          </span>
+
+          <h1>
+            Your Health Records.<br />
+            <span>Your Privacy.</span><br />
+            Our Priority.
+          </h1>
+
+          <p className="hs-hero-p">
+            A secure healthcare insurance platform powered by Zero-Knowledge Proofs
+            and Ethereum Sepolia smart contracts. Verify insurance claim eligibility
+            and calculate payouts without ever exposing private medical records or diagnosis codes.
+          </p>
+
+          <div className="hs-hero-buttons">
+            <button
+              type="button"
+              onClick={() => scrollToSection("portals")}
+              className="hs-btn-primary"
+            >
+              <span>Explore Portals</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => scrollToSection("about")}
+              className="hs-btn-secondary"
+            >
+              Learn More
+            </button>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <Link
-              href="/login"
-              className="text-sm font-semibold text-slate-700 hover:text-sky-600 transition"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/home"
-              className="text-sm font-semibold bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg transition shadow-sm"
-            >
-              Enter Portals
-            </Link>
+          <div className="hs-hero-stats">
+            <div>
+              <h3>100%</h3>
+              <p>Privacy Focused</p>
+            </div>
+            <div>
+              <h3>Groth16</h3>
+              <p>zk-SNARK Prover</p>
+            </div>
+            <div>
+              <h3>Web3</h3>
+              <p>Ethereum Sepolia</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Hero Interactive Main Card */}
+        <div className="hs-hero-card-col">
+          <div
+            className="hs-main-card cursor-pointer group"
+            onClick={() => setVerificationModalOpen(true)}
+            role="button"
+            tabIndex={0}
+            aria-label="Preview Zero-Knowledge Verification"
+          >
+            <div className="hs-card-icon group-hover:scale-105 transition-transform">
+              <ShieldCheck className="w-10 h-10 text-teal-600" />
+            </div>
+
+            <h3>Secure Verification</h3>
+            <p>Your medical data stays private.</p>
+
+            <div className="hs-security-status">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Zero-Knowledge Protected</span>
+            </div>
+
+            <div className="hs-card-bottom">
+              <span>Groth16 zk-SNARK Proof</span>
+              <Lock className="w-3.5 h-3.5 text-slate-400" />
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main className="flex-1 max-w-7xl mx-auto px-6 py-16 flex flex-col items-center text-center justify-center">
-        <div className="inline-flex items-center space-x-2 bg-sky-50 border border-sky-200 text-sky-700 px-4 py-1.5 rounded-full text-xs font-semibold mb-8">
-          <Lock className="w-3.5 h-3.5" />
-          <span>Patient-Controlled Cryptographic Privacy & Zero-Knowledge Settlement</span>
+      {/* 5. FEATURES SECTION */}
+      <section className="hs-section" id="features">
+        <div className="hs-section-heading">
+          <span className="hs-tag">Our Technology</span>
+          <h2>Healthcare Meets <span>Web3</span></h2>
+          <p>Mathematical privacy protection for modern healthcare insurance.</p>
         </div>
 
-        <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl leading-tight">
-          Sovereign Medical Records & Zero-Knowledge Insurance Claims
-        </h1>
+        <div className="hs-feature-grid">
+          <div className="hs-feature-card">
+            <div className="hs-feature-icon">
+              <Lock className="w-5 h-5 text-teal-600" />
+            </div>
+            <h3>Data Privacy</h3>
+            <p>
+              Protect sensitive medical records through multi-recipient X25519 and AES-256-GCM envelope encryption.
+            </p>
+          </div>
 
-        <p className="mt-6 text-lg text-slate-600 max-w-2xl">
-          HealthShield proves insurance eligibility and claim validity mathematically on Ethereum Sepolia using Groth16 zk-SNARKs—without ever revealing patient diagnoses or clinical records to insurers.
+          <div className="hs-feature-card">
+            <div className="hs-feature-icon">
+              <Fingerprint className="w-5 h-5 text-teal-600" />
+            </div>
+            <h3>Zero Knowledge Proofs</h3>
+            <p>
+              Generate client-side Groth16 proofs in browser Web Workers. Prove insurance eligibility without disclosing diagnosis codes.
+            </p>
+          </div>
+
+          <div className="hs-feature-card">
+            <div className="hs-feature-icon">
+              <Cpu className="w-5 h-5 text-teal-600" />
+            </div>
+            <h3>Blockchain Security</h3>
+            <p>
+              Verify claims through on-chain Solidity contracts on Ethereum Sepolia with fixed 12-element public signal integrity.
+            </p>
+          </div>
+
+          <div className="hs-feature-card">
+            <div className="hs-feature-icon">
+              <Zap className="w-5 h-5 text-teal-600" />
+            </div>
+            <h3>Instant Settlement</h3>
+            <p>
+              Automate co-pay calculations and claim approvals directly through smart contracts with zero human claim delay.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. PORTALS SECTION */}
+      <section className="hs-section hs-portals-section" id="portals">
+        <div className="hs-section-heading">
+          <span className="hs-tag">Get Started</span>
+          <h2>Choose Your <span>Portal</span></h2>
+          <p>Select your dedicated role gateway to sign in or create a self-service account.</p>
+        </div>
+
+        <div className="hs-portal-grid">
+          {/* Patient Portal Card */}
+          <div className="hs-portal-card">
+            <div>
+              <div className="hs-portal-icon-wrap hs-portal-patient">
+                <User className="w-8 h-8" />
+              </div>
+              <span className="hs-portal-badge hs-badge-patient">Patient Identity</span>
+              <h3>Patient Portal</h3>
+              <p>
+                Manage personal medical records, grant selective doctor access, and submit zero-leakage insurance claims with browser zk-SNARKs.
+              </p>
+            </div>
+
+            <div className="hs-portal-actions">
+              <button
+                type="button"
+                onClick={() => openAuth("patient", "login")}
+                className="hs-portal-btn-primary"
+              >
+                <span>Enter Patient Portal</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center justify-center gap-3 text-xs">
+                <Link
+                  href={portalConfig.portals.patient.routes.login}
+                  className="hs-portal-btn-secondary"
+                >
+                  Direct Sign In
+                </Link>
+                <span className="text-slate-300">•</span>
+                <button
+                  type="button"
+                  onClick={() => openAuth("patient", "register")}
+                  className="hs-portal-btn-secondary bg-transparent border-none cursor-pointer flex items-center gap-1"
+                >
+                  <UserPlus className="w-3 h-3" />
+                  <span>Register</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Hospital Portal Card */}
+          <div className="hs-portal-card">
+            <div>
+              <div className="hs-portal-icon-wrap hs-portal-hospital">
+                <Building2 className="w-8 h-8" />
+              </div>
+              <span className="hs-portal-badge hs-badge-hospital">Verified Care Provider</span>
+              <h3>Hospital Portal</h3>
+              <p>
+                Issue cryptographically signed patient encounters with BabyJubjub EdDSA signatures and AES-256-GCM envelope encryption.
+              </p>
+            </div>
+
+            <div className="hs-portal-actions">
+              <button
+                type="button"
+                onClick={() => openAuth("hospital", "login")}
+                className="hs-portal-btn-primary"
+              >
+                <span>Enter Hospital Portal</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center justify-center gap-3 text-xs">
+                <Link
+                  href={portalConfig.portals.hospital.routes.login}
+                  className="hs-portal-btn-secondary"
+                >
+                  Direct Sign In
+                </Link>
+                <span className="text-slate-300">•</span>
+                <button
+                  type="button"
+                  onClick={() => openAuth("hospital", "register")}
+                  className="hs-portal-btn-secondary bg-transparent border-none cursor-pointer flex items-center gap-1"
+                >
+                  <UserPlus className="w-3 h-3" />
+                  <span>Register</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Insurer Portal Card */}
+          <div className="hs-portal-card">
+            <div>
+              <div className="hs-portal-icon-wrap hs-portal-insurer">
+                <Landmark className="w-8 h-8" />
+              </div>
+              <span className="hs-portal-badge hs-badge-insurer">Zero-Knowledge Audited</span>
+              <h3>Insurance Portal</h3>
+              <p>
+                Adjudicate claims and verify on-chain proofs with zero clinical leakage. Audit policy validity without seeing diagnoses.
+              </p>
+            </div>
+
+            <div className="hs-portal-actions">
+              <button
+                type="button"
+                onClick={() => openAuth("insurer", "login")}
+                className="hs-portal-btn-primary"
+              >
+                <span>Enter Insurance Portal</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <div className="flex items-center justify-center gap-3 text-xs">
+                <Link
+                  href={portalConfig.portals.insurer.routes.login}
+                  className="hs-portal-btn-secondary"
+                >
+                  Direct Sign In
+                </Link>
+                <span className="text-slate-300">•</span>
+                <button
+                  type="button"
+                  onClick={() => openAuth("insurer", "register")}
+                  className="hs-portal-btn-secondary bg-transparent border-none cursor-pointer flex items-center gap-1"
+                >
+                  <UserPlus className="w-3 h-3" />
+                  <span>Register</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. ABOUT SECTION */}
+      <section className="hs-section hs-about" id="about">
+        <div className="hs-about-content">
+          <span className="hs-tag">About HealthShield</span>
+          <h2>Privacy Should Never Be A <span>Trade-Off.</span></h2>
+          <p>
+            HealthShield was engineered to eliminate the compromise between comprehensive healthcare insurance coverage
+            and patient medical privacy. By utilizing Groth16 zk-SNARKs and Ethereum Sepolia smart contracts, patients can
+            prove eligibility, treatments, and reimbursable amounts without ever releasing their raw diagnosis records to
+            third-party insurance adjudicators.
+          </p>
+        </div>
+      </section>
+
+      {/* 8. FOOTER */}
+      <footer className="hs-footer">
+        <div className="hs-footer-logo">
+          <Shield className="w-5 h-5 text-teal-400" />
+          <span>HealthShield</span>
+        </div>
+        <p>Privacy First. Trust Always. Zero-Knowledge Cryptography for Healthcare.</p>
+        <p className="hs-copyright">
+          © {new Date().getFullYear()} HealthShield. Production-grade privacy-preserving healthcare records.
         </p>
-
-        {/* Portal Cards */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl text-left">
-          {/* Patient Portal */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-sky-400 hover:shadow-lg transition flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center mb-6">
-                <UserCheck className="w-6 h-6" />
-              </div>
-              <h2 className="text-xl font-bold text-slate-900">Patient Portal</h2>
-              <p className="mt-2 text-sm text-slate-600">
-                Hold personal medical records with envelope encryption. Generate client-side Groth16 proofs to submit zero-leakage claims.
-              </p>
-            </div>
-            <div className="mt-8 flex items-center justify-between text-sm">
-              <Link
-                href="/auth/patient"
-                className="font-semibold text-sky-600 hover:text-sky-700"
-              >
-                Sign In &rarr;
-              </Link>
-              <Link
-                href="/auth/patient/register"
-                className="px-3 py-1 bg-sky-50 hover:bg-sky-100 text-sky-700 font-semibold rounded-lg text-xs"
-              >
-                Register
-              </Link>
-            </div>
-          </div>
-
-          {/* Hospital Portal */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-sky-400 hover:shadow-lg transition flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
-                <Building2 className="w-6 h-6" />
-              </div>
-              <h2 className="text-xl font-bold text-slate-900">Hospital Portal</h2>
-              <p className="mt-2 text-sm text-slate-600">
-                Create cryptographically signed clinical encounters using BabyJubjub EdDSA signatures and AES-256-GCM envelope encryption.
-              </p>
-            </div>
-            <div className="mt-8 flex items-center justify-between text-sm">
-              <Link
-                href="/auth/hospital"
-                className="font-semibold text-emerald-600 hover:text-emerald-700"
-              >
-                Sign In &rarr;
-              </Link>
-              <Link
-                href="/auth/hospital/register"
-                className="px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-semibold rounded-lg text-xs"
-              >
-                Register
-              </Link>
-            </div>
-          </div>
-
-          {/* Insurer Portal */}
-          <div className="bg-white p-8 rounded-2xl border border-slate-200 hover:border-sky-400 hover:shadow-lg transition flex flex-col justify-between">
-            <div>
-              <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
-                <Landmark className="w-6 h-6" />
-              </div>
-              <h2 className="text-xl font-bold text-slate-900">Insurer Portal</h2>
-              <p className="mt-2 text-sm text-slate-600">
-                Verify mathematically authenticated claims with zero access to private diagnosis codes. Execute instant on-chain settlement.
-              </p>
-            </div>
-            <div className="mt-8 flex items-center justify-between text-sm">
-              <Link
-                href="/auth/insurer"
-                className="font-semibold text-indigo-600 hover:text-indigo-700"
-              >
-                Sign In &rarr;
-              </Link>
-              <Link
-                href="/auth/insurer/register"
-                className="px-3 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold rounded-lg text-xs"
-              >
-                Register
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Feature Badges */}
-        <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-slate-500 text-sm">
-          <div className="flex items-center space-x-2">
-            <Cpu className="w-4 h-4 text-sky-600" />
-            <span>Groth16 Web Worker Proofs</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Database className="w-4 h-4 text-emerald-600" />
-            <span>MongoDB Envelope Encryption</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <ShieldCheck className="w-4 h-4 text-indigo-600" />
-            <span>Ethereum Sepolia On-Chain Verification</span>
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t bg-white py-6 text-center text-xs text-slate-500">
-        HealthShield &copy; 2026. Designed with Zero-Knowledge Architecture for Confidential Healthcare.
       </footer>
     </div>
   );

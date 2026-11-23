@@ -1,7 +1,7 @@
 {
   "network": "localhost",
   "chainId": 31337,
-  "deployedAt": "2026-11-23T19:18:59.739Z",
+  "deployedAt": "2026-11-23T21:15:21.530Z",
   "contracts": {
     "HealthShieldRegistry": {
       "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",

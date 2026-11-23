@@ -111,3 +111,26 @@ mongo-data/
 # SECURITY: LOCAL SECRET MATERIAL
 # =====================================
 .DS_Store
+
+
+# Local machine data
+.appdata/
+.localappdata/
+.mongodb_data/
+
+# Hardhat generated files
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+
+# Local compiler binary
+circuits/bin/circom.exe
+
+# Local Runtime & Cache Directories
+.mongodb_data/
+.appdata/
+.localappdata/
+npm-cache/
+*.wt
+*.turtle
+*.lock
