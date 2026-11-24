@@ -93,7 +93,7 @@ export default function PatientDashboard() {
             <Activity className="w-5 h-5 text-indigo-600" />
           </div>
           <p className="text-lg font-bold text-slate-900 mt-4">POL-HS-2026-99</p>
-          <p className="text-xs text-slate-500 mt-1">Coverage Limit: $50,000 | Co-pay: 20%</p>
+          <p className="text-xs text-slate-500 mt-1">Coverage Limit: ₹50,000 | Co-pay: 20%</p>
         </div>
       </div>
 

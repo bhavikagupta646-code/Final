@@ -47,11 +47,13 @@ export class AuthController {
         { emailBlindIndex },
       ];
 
-      let finalWallet = walletAddress ? walletAddress.toLowerCase().trim() : null;
-      if (finalWallet && ethers.isAddress(finalWallet)) {
+      let finalWallet: string;
+      const trimmedWallet = typeof walletAddress === "string" ? walletAddress.trim().toLowerCase() : "";
+      if (trimmedWallet && ethers.isAddress(trimmedWallet)) {
+        finalWallet = trimmedWallet;
         duplicateQuery.push({ walletAddress: finalWallet });
       } else {
-        // Deterministically assign a valid fresh EVM wallet address so Web3/contract calls work out of the box
+        // Auto-generate a valid 0x... EVM wallet address if omitted, empty, or non-hex/invalid
         finalWallet = ethers.Wallet.createRandom().address.toLowerCase();
       }
 
@@ -79,7 +81,7 @@ export class AuthController {
       let babyJubjubEncryptedPriv: { ciphertext: string; iv: string; authTag: string } | undefined;
       let encPatientSecret: { ciphertext: string; iv: string; authTag: string } | undefined;
 
-      const userRole = role as UserRole;
+      const userRole = (role ? String(role).toUpperCase().trim() : "") as UserRole;
 
       if (userRole === UserRole.PATIENT) {
         effectiveFullName = effectiveFullName || "Valued Patient";
@@ -232,6 +234,8 @@ export class AuthController {
             entityId: newUser.entityId,
             publicKeyHex: newUser.publicKeyHex,
             babyJubjubPublicKey: newUser.babyJubjubPublicKey,
+            hospitalAx: newUser.babyJubjubPublicKey?.ax,
+            hospitalAy: newUser.babyJubjubPublicKey?.ay,
           },
           accessToken,
         },
@@ -244,7 +248,7 @@ export class AuthController {
 
   static async login(req: Request, res: Response): Promise<void> {
     try {
-      const { email, password } = req.body;
+      const { email, password, role } = req.body;
 
       if (!email || !password) {
         res.status(400).json({ success: false, error: "Email and password are required." });
@@ -252,7 +256,12 @@ export class AuthController {
       }
 
       const normalizedEmail = email.toLowerCase().trim();
-      const user = await User.findOne({ email: normalizedEmail });
+      const query: any = { email: normalizedEmail };
+      if (role && typeof role === "string" && role.trim()) {
+        query.role = { $regex: new RegExp(`^${role.trim()}$`, "i") };
+      }
+
+      const user = await User.findOne(query);
       if (!user) {
         res.status(401).json({ success: false, error: "Invalid email or password." });
         return;
@@ -302,6 +311,8 @@ export class AuthController {
             entityId: user.entityId,
             publicKeyHex: user.publicKeyHex,
             babyJubjubPublicKey: user.babyJubjubPublicKey,
+            hospitalAx: user.babyJubjubPublicKey?.ax,
+            hospitalAy: user.babyJubjubPublicKey?.ay,
           },
           accessToken,
         },

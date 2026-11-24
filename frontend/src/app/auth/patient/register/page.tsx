@@ -258,7 +258,7 @@ export default function PatientRegisterPage() {
                 <span>Zero-Knowledge & Privacy Safeguards</span>
               </div>
               <p className="text-slate-600">
-                A fresh X25519 keypair and per-user DEK are automatically generated to secure your records with AES-256-GCM envelope encryption. An active policy with $100,000 coverage limit will be pre-enrolled for ZKP claims.
+                A fresh X25519 keypair and per-user DEK are automatically generated to secure your records with AES-256-GCM envelope encryption. An active policy with ₹1,00,000 coverage limit will be pre-enrolled for ZKP claims.
               </p>
             </div>
           </div>

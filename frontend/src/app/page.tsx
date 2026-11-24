@@ -24,15 +24,7 @@ import { ClaimVerificationModal } from "../components/landing/ClaimVerificationM
 
 export default function LandingPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState<"patient" | "hospital" | "insurer">("patient");
-  const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [verificationModalOpen, setVerificationModalOpen] = useState(false);
-
-  const openAuth = (role: "patient" | "hospital" | "insurer", mode: "login" | "register" = "login") => {
-    setSelectedRole(role);
-    setAuthMode(mode);
-    setAuthModalOpen(true);
-  };
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -46,11 +38,11 @@ export default function LandingPage() {
       {/* 1. ECG Shield Loader */}
       <ECGShieldLoader />
 
-      {/* 2. Modals */}
+      {/* 2. Modals (Preserved for compatibility) */}
       <AuthModal
         isOpen={authModalOpen}
-        initialRole={selectedRole}
-        initialMode={authMode}
+        initialRole="patient"
+        initialMode="login"
         onClose={() => setAuthModalOpen(false)}
       />
 
@@ -98,22 +90,21 @@ export default function LandingPage() {
           </button>
         </div>
 
+        {/* Home Login & Register Entry Points -> HealthShield Portal Gateways (/home) */}
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => openAuth("patient", "login")}
-            className="text-25px font-bold text-slate-700 hover:text-teal-700 px-5 py-2 transition hidden sm:inline-block"
+          <Link
+            href="/home"
+            className="text-sm font-bold text-slate-700 hover:text-teal-700 px-3 py-2 transition hidden sm:inline-block"
           >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollToSection("portals")}
+            Login
+          </Link>
+          <Link
+            href="/home"
             className="hs-nav-btn"
           >
-            <span>Get Started</span>
+            <span>Register</span>
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -121,6 +112,8 @@ export default function LandingPage() {
       <header className="hs-hero">
         <div className="hs-hero-content">
           <span className="hs-tag">
+            <Lock className="w-3.5 h-3.5 text-teal-600" />
+            <span>Privacy First Healthcare</span>
           </span>
 
           <h1>
@@ -136,14 +129,13 @@ export default function LandingPage() {
           </p>
 
           <div className="hs-hero-buttons">
-            <button
-              type="button"
-              onClick={() => scrollToSection("portals")}
+            <Link
+              href="/home"
               className="hs-btn-primary"
             >
               <span>Explore Portals</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
 
             <button
               type="button"
@@ -273,31 +265,29 @@ export default function LandingPage() {
             </div>
 
             <div className="hs-portal-actions">
-              <button
-                type="button"
-                onClick={() => openAuth("patient", "login")}
+              <Link
+                href="/home"
                 className="hs-portal-btn-primary"
               >
                 <span>Enter Patient Portal</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
 
               <div className="flex items-center justify-center gap-3 text-xs">
                 <Link
-                  href={portalConfig.portals.patient.routes.login}
+                  href="/auth/patient"
                   className="hs-portal-btn-secondary"
                 >
                   Direct Sign In
                 </Link>
                 <span className="text-slate-300">•</span>
-                <button
-                  type="button"
-                  onClick={() => openAuth("patient", "register")}
-                  className="hs-portal-btn-secondary bg-transparent border-none cursor-pointer flex items-center gap-1"
+                <Link
+                  href="/auth/patient/register"
+                  className="hs-portal-btn-secondary flex items-center gap-1"
                 >
                   <UserPlus className="w-3 h-3" />
                   <span>Register</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -316,31 +306,29 @@ export default function LandingPage() {
             </div>
 
             <div className="hs-portal-actions">
-              <button
-                type="button"
-                onClick={() => openAuth("hospital", "login")}
+              <Link
+                href="/auth/hospital"
                 className="hs-portal-btn-primary"
               >
                 <span>Enter Hospital Portal</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
 
               <div className="flex items-center justify-center gap-3 text-xs">
                 <Link
-                  href={portalConfig.portals.hospital.routes.login}
+                  href="/auth/hospital"
                   className="hs-portal-btn-secondary"
                 >
                   Direct Sign In
                 </Link>
                 <span className="text-slate-300">•</span>
-                <button
-                  type="button"
-                  onClick={() => openAuth("hospital", "register")}
-                  className="hs-portal-btn-secondary bg-transparent border-none cursor-pointer flex items-center gap-1"
+                <Link
+                  href="/auth/hospital/register"
+                  className="hs-portal-btn-secondary flex items-center gap-1"
                 >
                   <UserPlus className="w-3 h-3" />
                   <span>Register</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -359,31 +347,29 @@ export default function LandingPage() {
             </div>
 
             <div className="hs-portal-actions">
-              <button
-                type="button"
-                onClick={() => openAuth("insurer", "login")}
+              <Link
+                href="/auth/insurer"
                 className="hs-portal-btn-primary"
               >
                 <span>Enter Insurance Portal</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
 
               <div className="flex items-center justify-center gap-3 text-xs">
                 <Link
-                  href={portalConfig.portals.insurer.routes.login}
+                  href="/auth/insurer"
                   className="hs-portal-btn-secondary"
                 >
                   Direct Sign In
                 </Link>
                 <span className="text-slate-300">•</span>
-                <button
-                  type="button"
-                  onClick={() => openAuth("insurer", "register")}
-                  className="hs-portal-btn-secondary bg-transparent border-none cursor-pointer flex items-center gap-1"
+                <Link
+                  href="/auth/insurer/register"
+                  className="hs-portal-btn-secondary flex items-center gap-1"
                 >
                   <UserPlus className="w-3 h-3" />
                   <span>Register</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>

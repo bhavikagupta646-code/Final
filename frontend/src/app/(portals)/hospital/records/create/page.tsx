@@ -118,7 +118,7 @@ export default function CreateRecordPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Billed Amount ($)
+                  Billed Amount (₹)
                 </label>
                 <input
                   type="number"

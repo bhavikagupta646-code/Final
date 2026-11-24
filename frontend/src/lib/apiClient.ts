@@ -43,6 +43,7 @@ export interface RegisterPayload {
   role: 'PATIENT' | 'HOSPITAL' | 'INSURER';
   fullName?: string;
   hospitalName?: string;
+  hospitalId?: string;
   licenseNumber?: string;
   insurerName?: string;
   jurisdiction?: string;

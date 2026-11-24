@@ -202,7 +202,7 @@ export default function NewClaimPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Billed Amount ($)
+                  Billed Amount (₹)
                 </label>
                 <input
                   type="number"
@@ -216,7 +216,7 @@ export default function NewClaimPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Policy Deductible ($)
+                  Policy Deductible (₹)
                 </label>
                 <input
                   type="number"

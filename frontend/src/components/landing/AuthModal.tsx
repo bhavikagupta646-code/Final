@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, Building2, ShieldCheck, X, ArrowRight, Lock, Key } from "lucide-react";
+import { User, Building2, ShieldCheck, X, ArrowRight, Lock, Key, Eye, EyeOff, Check } from "lucide-react";
 import { portalConfig } from "../../config/portalConfig";
 import { apiClient } from "../../lib/apiClient";
 
@@ -24,6 +24,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [mode, setMode] = useState<"login" | "register">(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [fullName, setFullName] = useState("");
   const [hospitalId, setHospitalId] = useState("");
   const [hospitalName, setHospitalName] = useState("");
@@ -40,6 +43,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setError(null);
     setEmail(currentPortal.demoCredentials.email);
     setPassword(currentPortal.demoCredentials.password);
+    if (mode === "register") {
+      setConfirmPassword(currentPortal.demoCredentials.password);
+    }
     if (role === "hospital" && currentPortal.demoCredentials.hospitalId) {
       setHospitalId(currentPortal.demoCredentials.hospitalId);
     }
@@ -48,25 +54,38 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (mode === "register") {
+      if (password.trim() !== confirmPassword.trim()) {
+        setError("Passwords do not match. Please re-enter.");
+        return;
+      }
+      if (password.trim().length < 8) {
+        setError("Password must be at least 8 characters long.");
+        return;
+      }
+    }
+
     setLoading(true);
 
     try {
       if (mode === "login") {
         await apiClient.login({
-          email,
+          email: email.trim().toLowerCase(),
           password,
           role: role.toUpperCase() as "PATIENT" | "HOSPITAL" | "INSURER",
-          hospitalId: role === "hospital" ? hospitalId || "HOSP-METRO-001" : undefined,
+          hospitalId: role === "hospital" && hospitalId.trim() ? hospitalId.trim() : undefined,
         });
       } else {
         await apiClient.register({
-          email,
-          password,
+          email: email.trim().toLowerCase(),
+          password: password.trim(),
           role: role.toUpperCase() as "PATIENT" | "HOSPITAL" | "INSURER",
-          fullName: fullName || undefined,
-          hospitalName: hospitalName || undefined,
-          licenseNumber: licenseNumber || undefined,
-          insurerName: insurerName || undefined,
+          fullName: fullName.trim() || undefined,
+          hospitalName: hospitalName.trim() || undefined,
+          hospitalId: role === "hospital" && hospitalId.trim() ? hospitalId.trim() : undefined,
+          licenseNumber: licenseNumber.trim() || undefined,
+          insurerName: insurerName.trim() || undefined,
         });
       }
 
@@ -74,7 +93,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       router.push(currentPortal.routes.dashboard);
       onClose();
     } catch (err: any) {
-      const msg = err.response?.data?.message || err.message || "Authentication failed";
+      const msg = err.response?.data?.error || err.response?.data?.message || err.message || "Authentication failed";
       setError(msg);
     } finally {
       setLoading(false);
@@ -165,6 +184,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 />
               </div>
               <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Hospital ID (Entity Code)</label>
+                <input
+                  type="text"
+                  value={hospitalId}
+                  onChange={(e) => setHospitalId(e.target.value)}
+                  placeholder="e.g., HOSP-2026-01"
+                  className="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 font-mono"
+                />
+              </div>
+              <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">License Number</label>
                 <input
                   type="text"
@@ -206,15 +235,55 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <div>
             <label className="block text-xs font-semibold text-slate-700 mb-1">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••••••"
-              className="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full text-xs pl-3.5 pr-10 py-2.5 border border-slate-300 rounded-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
+
+          {mode === "register" && (
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Confirm Password</label>
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full text-xs pl-3.5 pr-10 py-2.5 border border-slate-300 rounded-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              {confirmPassword && password.trim() === confirmPassword.trim() && (
+                <span className="text-[11px] text-emerald-600 mt-1 flex items-center gap-1 font-semibold">
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Passwords match</span>
+                </span>
+              )}
+            </div>
+          )}
 
           {mode === "login" && role === "hospital" && (
             <div>
@@ -223,7 +292,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 type="text"
                 value={hospitalId}
                 onChange={(e) => setHospitalId(e.target.value)}
-                placeholder="HOSP-METRO-001"
+                placeholder="e.g., HOSP-2026-01"
                 className="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
               />
             </div>

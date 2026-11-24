@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Building2, Lock, Mail, ShieldCheck, FileBadge, User, KeyRound, AlertCircle, Loader2, Check, Wallet } from "lucide-react";
+import { Building2, Lock, Mail, ShieldCheck, FileBadge, User, KeyRound, AlertCircle, Loader2, Check, Wallet, Eye, EyeOff } from "lucide-react";
 import { api } from "@/lib/api";
 
 export default function HospitalRegisterPage() {
@@ -18,6 +18,8 @@ export default function HospitalRegisterPage() {
   const [walletAddress, setWalletAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,13 +42,22 @@ export default function HospitalRegisterPage() {
     e.preventDefault();
     setError(null);
 
-    if (password !== confirmPassword) {
+    const trimmedPass = password.trim();
+    const trimmedConfirm = confirmPassword.trim();
+
+    if (trimmedPass !== trimmedConfirm) {
       setError("Passwords do not match. Please re-enter.");
       return;
     }
 
-    if (password.length < 8) {
+    if (trimmedPass.length < 8) {
       setError("Password must be at least 8 characters long.");
+      return;
+    }
+
+    const trimmedWallet = walletAddress.trim();
+    if (trimmedWallet && !/^0x[a-fA-F0-9]{40}$/.test(trimmedWallet)) {
+      setError("Leave empty to auto-generate a wallet, or enter a valid 0x... Ethereum address");
       return;
     }
 
@@ -60,10 +71,13 @@ export default function HospitalRegisterPage() {
         registrationLicenseNo: registrationLicenseNo.trim(),
         staffName: staffName.trim(),
         staffId: staffId.trim(),
-        email: email.trim(),
-        password,
-        walletAddress: walletAddress.trim() || undefined,
+        email: email.trim().toLowerCase(),
+        password: trimmedPass,
       };
+
+      if (trimmedWallet) {
+        payload.walletAddress = trimmedWallet;
+      }
 
       const { data } = await api.post("/auth/register", payload);
       const user = data.data.user;
@@ -133,7 +147,7 @@ export default function HospitalRegisterPage() {
                 required
                 value={hospitalId}
                 onChange={(e) => setHospitalId(e.target.value)}
-                placeholder="e.g. HOSP-CITY-401"
+                placeholder="e.g., HOSP-2026-01"
                 className="w-full px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-mono transition"
               />
             </div>
@@ -213,10 +227,13 @@ export default function HospitalRegisterPage() {
                   type="text"
                   value={walletAddress}
                   onChange={(e) => setWalletAddress(e.target.value)}
-                  placeholder="0x... (Assigned automatically if left empty)"
+                  placeholder="Leave empty to auto-generate a wallet, or enter a valid 0x... Ethereum address"
                   className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-mono transition"
                 />
               </div>
+              <span className="text-xs text-slate-400 mt-1 block">
+                Leave empty to auto-generate a wallet, or enter a valid 0x... Ethereum address
+              </span>
             </div>
 
             <div>
@@ -226,13 +243,21 @@ export default function HospitalRegisterPage() {
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition"
+                  className="w-full pl-9 pr-10 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
               {password && (
                 <div className="mt-2">
@@ -257,15 +282,23 @@ export default function HospitalRegisterPage() {
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition"
+                  className="w-full pl-9 pr-10 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm transition"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
-              {confirmPassword && password === confirmPassword && (
+              {confirmPassword && password.trim() === confirmPassword.trim() && (
                 <span className="text-xs text-emerald-600 mt-1 flex items-center space-x-1">
                   <Check className="w-3.5 h-3.5" />
                   <span>Passwords match</span>

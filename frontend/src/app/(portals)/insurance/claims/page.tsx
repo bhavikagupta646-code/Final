@@ -115,7 +115,7 @@ export default function InsurerClaimsPage() {
                 <div>
                   <span className="text-slate-500 block">Verified Payout Amount</span>
                   <span className="font-mono font-bold text-slate-900 text-base text-emerald-600">
-                    ${(claim.claimedPayoutCents / 100).toFixed(2)}
+                    ₹{(claim.claimedPayoutCents / 100).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
                 <div>

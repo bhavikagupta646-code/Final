@@ -123,7 +123,7 @@ export default function PatientRecordsPage() {
                       <div>
                         <span className="text-slate-500 block">Billed Amount</span>
                         <span className="font-mono font-bold text-slate-900 text-sm">
-                          ${(payload.billedAmountCents / 100).toFixed(2)}
+                          ₹{(payload.billedAmountCents / 100).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </span>
                       </div>
                       <div className="col-span-2">
