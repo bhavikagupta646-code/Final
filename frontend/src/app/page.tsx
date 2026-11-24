@@ -102,7 +102,7 @@ export default function LandingPage() {
           <button
             type="button"
             onClick={() => openAuth("patient", "login")}
-            className="text-xs font-bold text-slate-700 hover:text-teal-700 px-3 py-2 transition hidden sm:inline-block"
+            className="text-25px font-bold text-slate-700 hover:text-teal-700 px-5 py-2 transition hidden sm:inline-block"
           >
             Sign In
           </button>
@@ -121,8 +121,6 @@ export default function LandingPage() {
       <header className="hs-hero">
         <div className="hs-hero-content">
           <span className="hs-tag">
-            <Lock className="w-3.5 h-3.5 text-teal-600" />
-            <span>Privacy First Healthcare</span>
           </span>
 
           <h1>

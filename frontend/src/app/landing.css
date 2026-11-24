@@ -61,13 +61,15 @@
 
 .hs-nav-links {
   display: flex;
-  gap: 32px;
+  gap: 40px;
+  margin-left: 25px;
   align-items: center;
+  font-size: 25px;
 }
 
 .hs-nav-link {
   color: var(--text);
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.25s ease;
@@ -83,7 +85,7 @@
   color: white;
   background: var(--primary);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
   transition: all 0.25s ease;
   border: none;
   cursor: pointer;
@@ -128,6 +130,7 @@
   color: var(--dark);
   line-height: 1.15;
   margin: 22px 0;
+  margin-top: 8px;
   letter-spacing: -1.5px;
   font-weight: 800;
 }
